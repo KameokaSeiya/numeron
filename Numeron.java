@@ -8,12 +8,12 @@ class Numeron {
         String   line;
         String[] userInput;
         int      hitCount = 0;
-        Scanner  scanner = new Scanner(System.in);
+        Scanner  scanner  = new Scanner(System.in);
+        HitBlow hitBlow   = new HitBlow();
 
 
         // プログラム側でランダムな4桁の数値列を生成
         generate_number = GenerateRandom.generate_random();
-        System.out.println(generate_number);
 
         System.out.println("4桁の数字をコマンドラインに入力して！");
 
@@ -30,13 +30,12 @@ class Numeron {
 
             validateFlag = Validation.validation(userInput[0]);
             
-            if (validateFlag == false) {
+            if (!validateFlag) {
                 System.out.println("半角4桁の文字列以外が入力されているよ");
                 continue;
             }
             
             // ユーザー入力とランダム数字のhitカウント数を求める
-            HitBlow hitBlow = new HitBlow();
             hitCount = hitBlow.hit(userInput[0], generate_number);
             System.out.println("Your number is "+hitCount+ " hit!!");
         }
