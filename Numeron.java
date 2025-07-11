@@ -2,38 +2,46 @@ import java.util.*;
 
 class Numeron {
 
-    /**
-     * 4桁のランダム数字を生成する処理
-     * 4桁を構成する数字の重複は無しとする
-     * 
-     * @return make_number 
-     */
-    public String make_random() {
-        // Stringは不変なクラスで文字列を足すごとにインスタンス化しているためメモリを無駄に消費している。
-        // StringBuilderは可変なクラスのため文字列連結を滞りなく行える
-        StringBuilder make_number = new StringBuilder(); 
+    public static void main(String[] args) {
+        String   generate_number = "";
+        boolean  validateFlag;
+        String   line;
+        String[] userInput;
+        int      hitCount = 0;
+        Scanner  scanner = new Scanner(System.in);
 
-        ArrayList<String> numbers = new ArrayList<>(Arrays.asList("0", "1", "2", "3", "4", "5", "6", "7", "8", "9"));
 
-        // ランダムにリスト内をシャッフルする
-        Collections.shuffle(numbers);
+        // プログラム側でランダムな4桁の数値列を生成
+        generate_number = GenerateRandom.generate_random();
+        System.out.println(generate_number);
 
-        for (int i = 0; i < 4 ;i++) {
-            String number = numbers.get(i);
+        System.out.println("4桁の数字をコマンドラインに入力して！");
+
+        while (hitCount != 4) {
+            // ユーザー入力
+            line = scanner.next();
+            // 空白文字（スペース、タブなど）で分割
+            userInput = line.trim().split("\\s+");
+
+            if (userInput.length != 1) {
+                System.out.println("半角は入れないで4桁の数値を入力して");
+                continue;
+            }
+
+            validateFlag = Validation.validation(userInput[0]);
             
-            make_number.append(number);
+            if (validateFlag == false) {
+                System.out.println("半角4桁の文字列以外が入力されているよ");
+                continue;
+            }
+            
+            // ユーザー入力とランダム数字のhitカウント数を求める
+            HitBlow hitBlow = new HitBlow();
+            hitCount = hitBlow.hit(userInput[0], generate_number);
+            System.out.println("Your number is "+hitCount+ " hit!!");
         }
         
-        // toString()で文字列を取り出す
-        return make_number.toString();
-    }
-    public static void main(String[] args) {
-        String make_number;
-
-        // インスタンス生成
-        Numeron numeron = new Numeron();
-
-        make_number = numeron.make_random();
-        System.out.println(make_number);
+        scanner.close();
+        System.out.println("Finish !! the answer is "+ generate_number);
     }
 }
